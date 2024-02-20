@@ -17,14 +17,18 @@ As stated above, logistic regression involves using a [sigmoid function](https:/
 You will find the full dataset in `data/nsclc.csv`. Class labels are encoded in the `NSCLC` column of the dataset, with 1 = NSCLC and 0 = small cell. A set of features has been pre-selected for you to use in your model during testing (see `main.py`), but you are encouraged to submit unit tests that look at different features. The full list of features can be found in `logreg/utils.py`.   
 
 ## Tasks + Grading
-
-* [TODO] Complete the logistic regression implementation. (5 points)
-  * complete the `make_prediction` method
-  * complete the `loss_function` method
-  * complete the `calculate_gradient` method
-  * readable code with clear comments and method descriptions
-* [TODO] Write appropriate unit tests for each implemented function and for overall training procedure. See `test/test_logreg.py` for some suggested tests. (3 points)
-* [TODO] Package as a module using `pyproject.toml` and set up GitHub Actions to install your module and run your unit tests. Add a status badge to this README. (2 points)
+* Algorithm Implementation (6):
+  * Complete the `make_prediction` method (2)
+  * Complete the `loss_function` method (2)
+  * Complete the `calculate_gradient` method (2)
+* Unit tests (3):
+  * Unit test for `test_prediction`
+  * Unit test for `test_loss_function`
+  * Unit test for `test_gradient`
+  * Unit test for `test_training`
+* Code Readability (1)
+* Extra credit (0.5)
+  * Github actions and workflows (up to 0.5)
 
 ## Getting started
 
