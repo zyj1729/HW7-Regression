@@ -129,7 +129,11 @@ class LogisticRegressor(BaseRegressor):
         Returns: 
             The predicted labels (y_pred) for given X.
         """
-        pass
+        print(self.W)
+        temp = np.dot(X, self.W)
+        y_pred = 1 / (1 + np.exp(-temp))
+        return y_pred
+        
     
     def loss_function(self, y_true, y_pred) -> float:
         """
@@ -143,7 +147,10 @@ class LogisticRegressor(BaseRegressor):
         Returns: 
             The mean loss (a single number).
         """
-        pass
+        losses = - (y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
+        return np.mean(losses)
+        
+        
         
     def calculate_gradient(self, y_true, X) -> np.ndarray:
         """
@@ -157,4 +164,5 @@ class LogisticRegressor(BaseRegressor):
         Returns: 
             Vector of gradients.
         """
-        pass
+        y_pred = self.make_prediction(X)
+        return np.dot(X.T, y_pred - y_true) / X.shape[0]
