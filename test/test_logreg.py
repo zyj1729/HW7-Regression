@@ -11,6 +11,8 @@ This is not an exhaustive list.
 # Imports
 import pytest
 from regression import (logreg, utils)
+from sklearn.preprocessing import StandardScaler
+import numpy as np
 # (you will probably need to import more things here)
 
 def test_prediction():
