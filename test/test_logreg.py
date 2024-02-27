@@ -84,7 +84,7 @@ def test_gradient():
     log_model = logreg.LogisticRegressor(num_feats=6, learning_rate=0.01, tol=0.00001, max_iter=5000, batch_size=100)
     X_val = np.hstack([X_val, np.ones((X_val.shape[0], 1))])
     grad = log_model.calculate_gradient(y_val, X_val)
-    assert grad.shape[0] == X_val.W.shape[0], "Gradient should have the same size as model weights"
+    assert grad.shape[0] == log_model.W.shape[0], "Gradient should have the same size as model weights"
     assert sum([isinstance(i, float) for i in grad]) == grad.shape[0], "Gradient should be float"
 
 def test_training():
