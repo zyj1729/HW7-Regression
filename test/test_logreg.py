@@ -1,21 +1,14 @@
-"""
-Write your unit tests here. Some tests to include are listed below.
-This is not an exhaustive list.
-
-- check that prediction is working correctly
-- check that your loss function is being calculated correctly
-- check that your gradient is being calculated correctly
-- check that your weights update during training
-"""
-
 # Imports
 import pytest
 from regression import (logreg, utils)
 from sklearn.preprocessing import StandardScaler
 import numpy as np
-# (you will probably need to import more things here)
 
 def test_prediction():
+    """
+    Test that the logistic regression model's predictions are within the valid probability range [0, 1].
+    This ensures that the sigmoid function is applied correctly to the linear model's outputs.
+    """
     X_train, X_val, y_train, y_val = utils.loadDataset(
     features=[
         'Penicillin V Potassium 500 MG',
@@ -39,6 +32,10 @@ def test_prediction():
     assert (pred >= 0).all() and (pred <= 1).all(), "Predicted value should be between 0 and 1"
 
 def test_loss_function():
+    """
+    Test that the logistic regression model computes the loss function correctly.
+    This ensures that the binary cross-entropy loss is calculated properly.
+    """
     X_train, X_val, y_train, y_val = utils.loadDataset(
     features=[
         'Penicillin V Potassium 500 MG',
@@ -64,6 +61,10 @@ def test_loss_function():
     assert loss >= 0, "Loss should be at least 0"
 
 def test_gradient():
+    """
+    Test that the logistic regression model computes the gradient of the loss function correctly.
+    This ensures that the model can update its weights based on the gradient descent algorithm.
+    """
     X_train, X_val, y_train, y_val = utils.loadDataset(
     features=[
         'Penicillin V Potassium 500 MG',
@@ -88,6 +89,10 @@ def test_gradient():
     assert sum([isinstance(i, float) for i in grad]) == grad.shape[0], "Gradient should be float"
 
 def test_training():
+    """
+    Test that the logistic regression model updates its weights after training.
+    This ensures that the training process is capable of modifying the model's parameters.
+    """
     X_train, X_val, y_train, y_val = utils.loadDataset(
     features=[
         'Penicillin V Potassium 500 MG',

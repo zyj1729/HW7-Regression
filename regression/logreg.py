@@ -107,6 +107,17 @@ class BaseRegressor():
         
 # Implement logistic regression as a subclass
 class LogisticRegressor(BaseRegressor):
+     """
+    A logistic regression model that inherits from a BaseRegressor class.
+
+    Attributes:
+        num_feats (int): Number of features in the input dataset.
+        learning_rate (float): The step size at each iteration while moving toward a minimum of the loss function.
+        tol (float): The tolerance for stopping criteria. Training stops if the update size is less than this value.
+        max_iter (int): The maximum number of iterations allowed for the training process.
+        batch_size (int): The number of samples per batch to be passed through the algorithm.
+        W (np.ndarray): The weights vector for the logistic regression model, including the bias term as the last entry.
+    """
 
     def __init__(self, num_feats, learning_rate=0.01, tol=0.001, max_iter=100, batch_size=10):
         super().__init__(
@@ -119,50 +130,51 @@ class LogisticRegressor(BaseRegressor):
     
     def make_prediction(self, X) -> np.array:
         """
-        TODO: Implement logistic function to get estimates (y_pred) for input X values. The logistic
-        function is a transformation of the linear model into an "S-shaped" curve that can be used
-        for binary classification.
+        Computes the probability estimates for the given input features using the logistic function.
 
-        Arguments: 
-            X (np.ndarray): Matrix of feature values.
+        Parameters:
+            X (np.ndarray): Input feature matrix where each row represents a sample.
 
-        Returns: 
-            The predicted labels (y_pred) for given X.
+        Returns:
+            np.array: The predicted probabilities that each input sample belongs to the positive class.
         """
-        print(self.W)
-        temp = np.dot(X, self.W)
-        y_pred = 1 / (1 + np.exp(-temp))
+        # Linear combination of input features and weights
+        z = np.dot(X, self.W)
+        # Logistic function applied to linear combination for probability estimation
+        y_pred = 1 / (1 + np.exp(-z))
         return y_pred
-        
     
     def loss_function(self, y_true, y_pred) -> float:
         """
-        TODO: Implement binary cross entropy loss, which assumes that the true labels are either
-        0 or 1. (This can be extended to more than two classes, but here we have just two.)
+        Calculates the binary cross-entropy loss between true labels and predicted probabilities.
 
-        Arguments:
-            y_true (np.array): True labels.
-            y_pred (np.array): Predicted labels.
+        Parameters:
+            y_true (np.array): True binary labels for each input sample.
+            y_pred (np.array): Predicted probabilities for each input sample being in the positive class.
 
-        Returns: 
-            The mean loss (a single number).
+        Returns:
+            float: The mean binary cross-entropy loss over all input samples.
         """
+        # Clip predictions to avoid log(0) which is undefined
+        eps = 1e-15
+        y_pred = np.clip(y_pred, eps, 1 - eps)
+        # Binary cross-entropy loss computation
         losses = - (y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
         return np.mean(losses)
         
-        
-        
     def calculate_gradient(self, y_true, X) -> np.ndarray:
         """
-        TODO: Calculate the gradient of the loss function with respect to the given data. This
-        will be used to update the weights during training.
+        Computes the gradient of the binary cross-entropy loss function with respect to the model weights.
 
-        Arguments:
-            y_true (np.array): True labels.
-            X (np.ndarray): Matrix of feature values.
+        Parameters:
+            y_true (np.array): True binary labels for each input sample.
+            X (np.ndarray): Input feature matrix where each row represents a sample.
 
-        Returns: 
-            Vector of gradients.
+        Returns:
+            np.ndarray: The gradient of the loss with respect to the weights, used for updating the weights.
         """
+        # Predicted probabilities for the given input
         y_pred = self.make_prediction(X)
-        return np.dot(X.T, y_pred - y_true) / X.shape[0]
+        # Gradient of the binary cross-entropy loss with respect to the weights
+        gradient = np.dot(X.T, (y_pred - y_true)) / X.shape[0]
+        return gradient
